@@ -2,13 +2,12 @@ import pandas as pd
 
 # ファイルパスをリストで指定
 file_paths = [
-    "sk398_bta_c-completed.db_median_fluo_intensities.csv",  # 最初のファイル
-    "sk398_bta_15_40ms-completed.db_median_fluo_intensities.csv",  # 残りの5つのファイル
-    "sk398_bta_16_40ms-completed.db_median_fluo_intensities.csv",
-    "sk398_bta_17-completed.db_median_fluo_intensities.csv",
-    "sk398_bta_18-completed.db_median_fluo_intensities.csv",
-    "sk398_bta_19-completed.db_median_fluo_intensities.csv",
-    "sk398_bta_20-completed.db_median_fluo_intensities.csv"
+    "sk398_01_bta_0-completed.db_median_fluo_intensities.csv",  # 最初のファイル
+    "sk398_01_bta_07-completed.db_median_fluo_intensities.csv",  # 残りの5つのファイル
+    "sk398_01_bta_1-completed.db_median_fluo_intensities.csv",
+    "sk398_01_bta_13-completed.db_median_fluo_intensities.csv",
+    "sk398_01_bta_15-completed.db_median_fluo_intensities.csv",
+    "sk398_01_bta_18-completed.db_median_fluo_intensities.csv"
 ]
 
 # 最初のファイルを読み込み
