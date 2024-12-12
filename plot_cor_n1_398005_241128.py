@@ -53,7 +53,10 @@ correlation_coefficient, _ = pearsonr(c, f)
 fit_equation = f'f(x) = {slope:.4f} * x'
 fit_equation_f = f'{fit_equation}\n(R²= {correlation_coefficient:.4f})'
 
-ax.plot(c, line_of_best_fit, color='black', linewidth=0.7, label=fit_equation_f)
+x = np.linspace(0, 100, 100)
+ax.plot(x, x, color='black', linestyle='--', linewidth=0.8, label='x = y')
+
+ax.plot(c, line_of_best_fit, color='black', linewidth=0.1, label=fit_equation_f)
 ax.legend(loc='lower right', fontsize='8')
 fig.savefig("fig_bta_cor_398005_241128_2.png")
 
