@@ -16,12 +16,12 @@ f_red = multiply_by_100([0.04950495, 0.223404255, 0.984924623, 1, 1, 1])
 
 fig, ax = plt.subplots(figsize=(6, 6))
 
-ax.scatter(c_black, f_black, color='deepskyblue', label='SK398_empty vector')
-ax.scatter(c_red, f_red, color='darkviolet', label='SK402_GroESL')
+ax.scatter(c_black, f_black, color='black', label='SK398_empty vector', s=90)
+ax.scatter(c_red, f_red, color='red', label='SK402_GroESL', s=90)
 
 ax.grid(True)
-ax.set_xlabel('formation rate(%)')
-ax.set_ylabel('dead cell rate(%)')
+ax.set_xlabel('Formation rate(%)')
+ax.set_ylabel('Death rate(%)')
 ax.set_ylim(-5, 105)
 ax.set_xlim(-5, 105)
 ax.set_title('IPTG 0.1mM')
@@ -43,7 +43,7 @@ fit_equation_f = f'{fit_equation}\n(R²= {correlation_coefficient:.4f})'
 x = np.linspace(0, 100, 100)
 ax.plot(x, x, color='black', linestyle='--', linewidth=0.8, label='x = y')
 
-ax.legend(loc='lower right', fontsize='8')
+ax.legend(loc='lower right', fontsize='12')
 
 # 保存
 fig.savefig("fig_bta_cor_398402_01_241128.png")
