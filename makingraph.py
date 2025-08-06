@@ -16,7 +16,7 @@ sns.barplot(x='Label', y='Value', data=df)
 # グラフの装飾
 plt.title('pKJE7')
 plt.ylim(0, 1)  # y軸の範囲を0〜1に固定
-plt.ylabel('Formation rate')
-plt.xlabel('Butanol concentration')
-plt.savefig('398_barplot_250724.png', dpi=300, bbox_inches='tight')
+plt.ylabel('value')
+plt.xlabel('Label')
+plt.savefig('p7_barplot_250715.png', dpi=300, bbox_inches='tight')
 plt.show()
