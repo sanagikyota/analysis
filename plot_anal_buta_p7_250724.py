@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 
 # ファイルパスをリストで指定（最初のファイル＋3ファイル）
 file_paths = [
-    "p7_bta_0001-completed.db_median_fluo_intensities.csv",  # 最初のファイル
-    "p7_bta_07-completed.db_median_fluo_intensities.csv",
-    "p7_bta_10001-completed.db_median_fluo_intensities.csv",
-    "p7_bta_15-completed.db_median_fluo_intensities.csv"
+    "p7_bta_0exp-completed.db_median_fluo_intensities.csv",  # 最初のファイル
+    "p7_bta_1001-completed.db_median_fluo_intensities.csv",
+    "p7_bta_13001-completed.db_median_fluo_intensities.csv",
+    "p7_bta_15001-completed.db_median_fluo_intensities.csv"
 ]
 
 # 最初のファイルを読み込み
