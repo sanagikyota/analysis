@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # データの準備
-values = [0.05, 0.35964912280701755, 0.3237410071942446, 0.47435897435897434]
-labels = ['0', '1.0', '1.3', '1.5']  # 任意のラベルに変更可能
+values = [0.05, 0.7857142857142857, 1.0, 0.9733333333333334, 0.9897959183673469]  # 各ファイルの割合
+labels = ['0', '1.0', '1.3', '1.5', '1.8']  # 任意のラベルに変更可能
 
 # データフレームに変換
 df = pd.DataFrame({'Label': labels, 'Value': values})
@@ -14,9 +14,9 @@ sns.set(style='whitegrid')
 sns.barplot(x='Label', y='Value', data=df)
 
 # グラフの装飾
-plt.title('pKJE7')
+plt.title('sk398')
 plt.ylim(0, 1)  # y軸の範囲を0〜1に固定
-plt.ylabel('value')
-plt.xlabel('Label')
-plt.savefig('p7_barplot_250715.png', dpi=300, bbox_inches='tight')
+plt.ylabel('Formation Rate')
+plt.xlabel('Butanol Concentration (v/v%)')
+plt.savefig('sk398_barplot_251007.png', dpi=300, bbox_inches='tight')
 plt.show()
