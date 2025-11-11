@@ -8,23 +8,23 @@ def multiply_by_100(data):
 
 sns.set()
 
-c_black = multiply_by_100([0.05, 0.05042016806722689, 0.0625, 0.1419753086419753, 0.42990654205607476, 0.38028169014084506])
-f_black = multiply_by_100([0, 0.109489051, 0.288659794, 0.852348993, 0.9921875, 1])
+c_black = multiply_by_100([0.05, 0.59375, 0.7961165048543689, 1.0, 0.9640718562874252])
+f_black = multiply_by_100([0, 0.348101266, 1, 1, 1])
 
-c_red = multiply_by_100([0.05, 0.1686746987951807, 0.2777777777777778, 0.3391304347826087, 0.4935064935064935, 0.5163398692810458])
-f_red = multiply_by_100([0.04950495, 0.223404255, 0.984924623, 1, 1, 1])
+c_red = multiply_by_100([0.05, 0.3620178041543027, 0.46875, 0.7592592592592593, 0.5056179775280899])
+f_red = multiply_by_100([0, 0.173611111, 0.634920635, 1, 1])
 
 fig, ax = plt.subplots(figsize=(6, 6))
 
 ax.scatter(c_black, f_black, color='deepskyblue', label='SK398_empty vector')
-ax.scatter(c_red, f_red, color='darkviolet', label='SK402_GroESL')
+ax.scatter(c_red, f_red, color='darkviolet', label='pKJE7_DnaKJ_grpE')
 
 ax.grid(True)
 ax.set_xlabel('formation rate(%)')
 ax.set_ylabel('dead cell rate(%)')
 ax.set_ylim(-5, 105)
 ax.set_xlim(-5, 105)
-ax.set_title('IPTG 0.1mM')
+ax.set_title('Correlation diagram')
 
 slope_black, _ = np.polyfit(c_black, f_black, 1)
 line_of_best_fit = slope_black * np.array(c_black)
@@ -46,6 +46,6 @@ ax.plot(x, x, color='black', linestyle='--', linewidth=0.8, label='x = y')
 ax.legend(loc='lower right', fontsize='8')
 
 # 保存
-fig.savefig("fig_bta_cor_398402_01_241217_v2.png")
+fig.savefig("fig_bta_cor_398p7_250805.png")
 
 plt.show()
