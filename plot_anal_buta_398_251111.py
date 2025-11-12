@@ -4,11 +4,11 @@ import seaborn as sns
 
 # ファイルパスをリストで指定（最初のファイル＋4ファイル＝合計5ファイル）
 file_paths = [
-    "398_bta_exp_1023-completed.db_median_fluo1_fluo_intensities (1).csv",  # 最初のファイル
-    "398_bta_1_1023-completed.db_median_fluo1_fluo_intensities.csv",
-    "398_bta_13_1023-completed.db_median_fluo1_fluo_intensities.csv",
-    "398_bta_15_1023-completed.db_median_fluo1_fluo_intensities.csv",
-    "398_bta_18_1023-completed.db_median_fluo1_fluo_intensities.csv"
+    "398_bta_exp_1111-completed.db_median_fluo1_fluo_intensities.csv",  # 最初のファイル
+    "398_bta_1_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "398_bta_13_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "398_bta_15_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "398_bta_18_1111-completed.db_median_fluo1_fluo_intensities.csv"
 ]
 
 # 最初のファイルを読み込み
@@ -50,6 +50,6 @@ plt.ylabel('Formation Rate')
 plt.xlabel('Butanol Concentration (v/v%)')
 
 # 保存と表示
-outfile = '398_barplot_251023.png'
+outfile = '398_barplot_251111.png'
 plt.savefig(outfile, dpi=300, bbox_inches='tight')
 plt.show()

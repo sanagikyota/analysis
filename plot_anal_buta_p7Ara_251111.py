@@ -4,11 +4,11 @@ import seaborn as sns
 
 # ファイルパスをリストで指定（最初のファイル＋4ファイル＝合計5ファイル）
 file_paths = [
-    "p7_bta_exp_1023-completed.db_median_fluo1_fluo_intensities.csv",  # 最初のファイル
-    "p7_bta_1_1023-completed.db_median_fluo1_fluo_intensities.csv",
-    "p7_bta_13_1023-completed.db_median_fluo1_fluo_intensities.csv",
-    "p7_bta_15_1023-completed.db_median_fluo1_fluo_intensities.csv",
-    "p7_bta_18_1023-completed.db_median_fluo1_fluo_intensities.csv"
+    "p7ara_bta_exp_1111-completed.db_median_fluo1_fluo_intensities.csv",  # 最初のファイル
+    "p7ara_bta_1_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "p7ara_bta_13_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "p7ara_bta_15_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "p7ara_bta_18_1111-completed.db_median_fluo1_fluo_intensities.csv"
 ]
 
 # 最初のファイルを読み込み
@@ -44,12 +44,12 @@ sns.set(style='whitegrid')
 plt.figure(figsize=(8, 5))
 sns.barplot(x='Label', y='Value', data=df_plot, color='blue')
 
-plt.title('pKJE7')
+plt.title('pKJE7_Ara')
 plt.ylim(0, 1)
 plt.ylabel('Formation Rate')
 plt.xlabel('Butanol Concentration (v/v%)')
 
 # 保存と表示
-outfile = 'p7_barplot_251023.png'
+outfile = 'pKJE7_Ara_barplot_251111.png'
 plt.savefig(outfile, dpi=300, bbox_inches='tight')
 plt.show()
