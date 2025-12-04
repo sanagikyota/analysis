@@ -8,15 +8,16 @@ import os
 
 # CSVファイルを複数指定（ここに増やしてください）
 csv_paths = [
-    "398_bta_13_1016-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "398_bta_15_1023-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "398_bta_18_1023-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "398_bta_18_1015-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "p7_bta_15_1023-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "p7_bta_18_1023-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "398_bta_18_1008-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "398_bta_15_1008-completed.db_median_fluo1_fluo_intensities_2.csv",
-    "p7_bta_18_1009-completed.db_median_fluo1_fluo_intensities_2.csv",
+    "398_bta_exp_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "p7_bta_exp_1111-completed.db_median_fluo1_fluo_intensities.csv",
+    "398_bta_exp_1023-completed.db_median_fluo1_fluo_intensities (1).csv",
+    "p7_bta_exp_1023-completed.db_median_fluo1_fluo_intensities.csv",
+    "398_bta_exp_1015-completed.db_median_fluo1_fluo_intensities.csv",
+    "p7_bta_exp_1015-completed.db_median_fluo1_fluo_intensities.csv",
+    "398_bta_exp_1007-completed.db_median_fluo_intensities.csv",
+    "p7_bta_exp_1007-completed.db_median_fluo_intensities.csv",
+    "398_bta_0exp001-completed.db_median_fluo_intensities.csv",
+    "p7_bta_0exp-completed.db_median_fluo_intensities.csv",
 ]
 
 sns.set(style="whitegrid")
@@ -68,7 +69,7 @@ else:
 
     ax.set_xlabel("Median")
     ax.set_ylabel("Cell count")
-    ax.set_title("Histogram of median_un")
+    ax.set_title("Histogram of median_exp")
 
     # 総細胞数のみをプロット上に表示
     info_text = f"Total cells: {total_cells}"
@@ -79,7 +80,7 @@ else:
     ax.legend(loc="upper left")
     plt.tight_layout()
 
-    out_png = "un_histgram.png"
+    out_png = "exp_histogram.png"
     plt.savefig(out_png, dpi=300, bbox_inches="tight")
     plt.show()
     print(f"Saved: {out_png}")

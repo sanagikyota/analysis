@@ -1,3 +1,4 @@
+# ...existing code...
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -38,14 +39,26 @@ if len(all_values) == 0:
 else:
     data = np.concatenate(all_values)
 
+    # 基本統計（プロット用）
     mu = data.mean()
     sigma = data.std(ddof=0)
-    total_cells = len(data)  
+    total_cells = len(data)  # 総細胞数
 
+    # ヒストグラム（単一グラフに統合）
     bins = 15
     fig, ax = plt.subplots(figsize=(8, 5))
     counts, bin_edges, _ = ax.hist(data, bins=bins, color="skyblue", edgecolor="k")
 
+    # ビン中心を結ぶ線
+    bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+    ax.plot(bin_centers, counts, color="black", marker="o", linestyle="-", lw=1, label="Histogram (connected)")
+
+    # 平滑化（移動平均）で曲線化
+    window = 3
+    smooth_counts = np.convolve(counts, np.ones(window)/window, mode="same")
+    ax.plot(bin_centers, smooth_counts, color="black", linestyle="--", lw=1.5, label="Smoothed histogram")
+
+    # 正規分布（視覚比較用、ヒストグラムスケールに合わせる）
     x = np.linspace(data.min(), data.max(), 200)
     if sigma > 0:
         pdf = (1 / (sigma * math.sqrt(2 * math.pi))) * np.exp(-0.5 * ((x - mu) / sigma) ** 2)
@@ -66,7 +79,8 @@ else:
     ax.legend(loc="upper left")
     plt.tight_layout()
 
-    out_png = "testgram_un.png"
+    out_png = "un_histogram.png"
     plt.savefig(out_png, dpi=300, bbox_inches="tight")
     plt.show()
     print(f"Saved: {out_png}")
+# ...existing code...
