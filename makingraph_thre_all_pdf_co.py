@@ -7,7 +7,7 @@ import seaborn as sns
 sns.set(style="whitegrid")
 
 
-csv_paths_exp = [
+csv_paths_non = [
     "398_bta_exp_1111-completed.db_median_fluo1_fluo_intensities.csv",
     "p7_bta_exp_1111-completed.db_median_fluo1_fluo_intensities.csv",
     "398_bta_exp_1023-completed.db_median_fluo1_fluo_intensities (1).csv",
@@ -20,7 +20,7 @@ csv_paths_exp = [
     "p7_bta_0exp-completed.db_median_fluo_intensities.csv",
 ]
 
-csv_paths_un = [
+csv_paths_par = [
     "398_bta_13_1016-completed.db_median_fluo1_fluo_intensities_2.csv",
     "398_bta_15_1023-completed.db_median_fluo1_fluo_intensities_2.csv",
     "398_bta_18_1023-completed.db_median_fluo1_fluo_intensities_2.csv",
@@ -32,7 +32,7 @@ csv_paths_un = [
     "p7_bta_18_1009-completed.db_median_fluo1_fluo_intensities_2.csv",
 ]
 
-csv_paths_agg = [
+csv_paths_com = [
     "398_bta_15_1008-completed.db_median_fluo1_fluo_intensities_1.csv",
     "398_bta_18_1008-completed.db_median_fluo1_fluo_intensities_1.csv",
     "398_bta_18_1015-completed.db_median_fluo1_fluo_intensities_1.csv",
@@ -59,37 +59,42 @@ def load_group(paths):
     return np.concatenate(arr) if len(arr) else np.array([])
 
 
-data_exp = load_group(csv_paths_exp)
-data_un  = load_group(csv_paths_un)
-data_agg = load_group(csv_paths_agg)
+data_non = load_group(csv_paths_non)
+data_par  = load_group(csv_paths_par)
+data_com = load_group(csv_paths_com)
 
-if data_exp.size == 0 or data_un.size == 0 or data_agg.size == 0:
+if data_non.size == 0 or data_par.size == 0 or data_com.size == 0:
     print("データ読み込みエラー")
     exit()
 
-total_exp = len(data_exp)
-total_un  = len(data_un)
-total_agg = len(data_agg)
-print(f"Total cells - exp: {total_exp}, un: {total_un}, agg: {total_agg}")
+total_non = len(data_non)
+total_par  = len(data_par)
+total_com = len(data_com)
+print(f"Total cells - non: {total_non}, par: {total_par}, com: {total_com}")
 
-combined_min = min(data_exp.min(), data_un.min(), data_agg.min())
-combined_max = max(data_exp.max(), data_un.max(), data_agg.max())
-
-bins = 15
+combined_min = min(data_non.min(), data_par.min(), data_com.min())
+combined_max = max(data_non.max(), data_par.max(), data_com.max())
+# Use a denser binning based on Freedman-Diaconis with a floor for stability.
+combined_data = np.concatenate([data_non, data_par, data_com])
+iqr = np.subtract(*np.percentile(combined_data, [75, 25]))
+fd_width = 2 * iqr / (len(combined_data) ** (1 / 3)) if len(combined_data) > 0 else 0
+fd_bins = int(np.ceil((combined_max - combined_min) / fd_width)) if fd_width > 0 else 0
+# Slightly wider bins: use 80% of FD-estimated bin count with a modest floor.
+bins = max(int(fd_bins * 0.8), 44)
 bin_edges   = np.linspace(combined_min, combined_max, bins + 1)
 bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
 bin_width   = bin_edges[1] - bin_edges[0]
 
-hist_exp, _  = np.histogram(data_exp, bins=bin_edges, density=True)
-hist_un, _   = np.histogram(data_un,  bins=bin_edges, density=True)
-hist_agg, _  = np.histogram(data_agg, bins=bin_edges, density=True)
+hist_non, _  = np.histogram(data_non, bins=bin_edges, density=True)
+hist_par, _   = np.histogram(data_par,  bins=bin_edges, density=True)
+hist_com, _  = np.histogram(data_com, bins=bin_edges, density=True)
 
 def smooth(x, w=3):
     return np.convolve(x, np.ones(w) / w, mode="same")
 
-smooth_exp = smooth(hist_exp, 3)
-smooth_un  = smooth(hist_un, 3)
-smooth_agg = smooth(hist_agg, 3)
+smooth_non = smooth(hist_non, 3)
+smooth_par  = smooth(hist_par, 3)
+smooth_com = smooth(hist_com, 3)
 
 
 def find_intersections(x, y1, y2):
@@ -104,48 +109,50 @@ def find_intersections(x, y1, y2):
     return roots
 
 
-roots_agg_un = find_intersections(bin_centers, smooth_agg, smooth_un)
-roots_un_exp = find_intersections(bin_centers, smooth_un,  smooth_exp)
+roots_com_par = find_intersections(bin_centers, smooth_com, smooth_par)
+roots_par_non = find_intersections(bin_centers, smooth_par,  smooth_non)
 
-all_roots = sorted(roots_agg_un + roots_un_exp)
+all_roots = sorted(roots_com_par + roots_par_non)
 
-print("\nagg–un intersections:", roots_agg_un)
-print("un–exp intersections:", roots_un_exp)
+print("\ncom-par intersections:", roots_com_par)
+print("par-non intersections:", roots_par_non)
 print("all intersections (sorted):", all_roots)
 
 plt.figure(figsize=(9, 6))
 
-plt.bar(bin_centers - bin_width/2, hist_agg, width=bin_width,
-        color="orange", alpha=0.3, label="agg histogram")
-plt.bar(bin_centers - bin_width/2, hist_un,  width=bin_width,
-        color="green",  alpha=0.3, label="un histogram")
-plt.bar(bin_centers - bin_width/2, hist_exp, width=bin_width,
-        color="blue",   alpha=0.3, label="exp histogram")
+plt.bar(bin_centers - bin_width/2, hist_com, width=bin_width,
+        color="orange", alpha=0.3, label="com histogram")
+plt.bar(bin_centers - bin_width/2, hist_par,  width=bin_width,
+        color="green",  alpha=0.3, label="par histogram")
+plt.bar(bin_centers - bin_width/2, hist_non, width=bin_width,
+        color="blue",   alpha=0.3, label="non histogram")
 
-plt.plot(bin_centers, smooth_agg, color="orange", lw=2, label="agg smoothed")
-plt.plot(bin_centers, smooth_un,  color="green",  lw=2, label="un smoothed")
-plt.plot(bin_centers, smooth_exp, color="blue",   lw=2, label="exp smoothed")
+plt.plot(bin_centers, smooth_com, color="orange", lw=2, label="com smoothed")
+plt.plot(bin_centers, smooth_par,  color="green",  lw=2, label="par smoothed")
+plt.plot(bin_centers, smooth_non, color="blue",   lw=2, label="non smoothed")
 
-for r in roots_agg_un:
-    y = np.interp(r, bin_centers, smooth_agg)
+for r in roots_com_par:
+    y = np.interp(r, bin_centers, smooth_com)
     plt.scatter(r, y, color="red", s=40, zorder=5)
     plt.axvline(r, color="red", ls="--", lw=1.2)
 
-for r in roots_un_exp:
-    y = np.interp(r, bin_centers, smooth_un)
+for r in roots_par_non:
+    y = np.interp(r, bin_centers, smooth_par)
     plt.scatter(r, y, color="red", s=40, zorder=5)
     plt.axvline(r, color="red", ls="--", lw=1.2)
 
 ax = plt.gca()
 plt.legend(loc="upper left")
 
+def fmt_roots(vals):
+    return ", ".join(fr"$\mathbf{{{x:.4f}}}$" for x in vals) if vals else "None"
+
 info_lines = [
-    "agg–un: " + (", ".join(f"{x:.4f}" for x in roots_agg_un) if roots_agg_un else "None"),
-    "un–exp: " + (", ".join(f"{x:.4f}" for x in roots_un_exp) if roots_un_exp else "None"),
-    # "all (sorted): " + (", ".join(f"{x:.4f}" for x in all_roots) if all_roots else "None"),
-    f"agg total cells: {total_agg}",
-    f"un total cells:  {total_un}",
-    f"exp total cells: {total_exp}",
+    f"com-par: {fmt_roots(roots_com_par)}",
+    f"par-non: {fmt_roots(roots_par_non)}",
+    f"com total cells: {total_com}",
+    f"par total cells:  {total_par}",
+    f"non total cells: {total_non}",
 ]
 info_text = "\n".join(info_lines)
 
@@ -153,9 +160,10 @@ ax.text(0.02, 0.69, info_text,
         transform=ax.transAxes, ha="left", va="top", fontsize=11,
         bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray", alpha=0.9))
 
+
 plt.xlabel("Median")
 plt.ylabel("Probability density (PDF)")
-plt.title("agg vs un vs exp (common bin range & bin width)")
+plt.title("com vs par vs non")
 plt.xlim(combined_min, combined_max)
 plt.tight_layout()
 plt.savefig("all_pdf_common.png", dpi=300)
